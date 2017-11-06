@@ -5,18 +5,25 @@
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0">
     <title>THREEJS Snowflakes</title>
     <style media="screen">
+      html, body {
+        margin: 0;
+        width: 100%;
+        height: 100%;
+      }
 
+      canvas {
+        width: 100%;
+        height: 100%;
+      }
     </style>
   </head>
   <body>
-    <!-- NOTE: We're currently using the width and height tag attributes to calculate the pixel ratio and density whilst setting the visual size with CSS -->
-    <canvas id="canvas" width="300" height="300" style="width:600px; height:600px;"></canvas>
+    <canvas id="canvas"></canvas>
 
 
     <!-- <script src='../../build/three.js'></script> -->
-    <script src="cdn/three.min.js"></script>
-    <script src="cdn/TweenMax.min.js"></script>
-    <script src="./js/GPUParticleSystem.js"></script>
-    <script src="app.js"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/three.js/88/three.min.js'></script>
+    <script src="./js/VolumetricSnow.js"></script>
+    <script src="snow.js"></script>
   </body>
 </html>
