@@ -11,15 +11,18 @@ THREE.VolumetricSnow = function ( options ) {
 
   // options.rate = options.rate || 100
   this.totalParticles = 0
-  this.maxParticles = 600
+  this.maxParticles = options.maxParticles || 600
   this.volume = options.volume || { w:15, h:15, d:15 }
   this.sprite = options.sprite || './textures/particle2.png'
 
 
 
   const s_map = new THREE.TextureLoader().load( this.sprite )
-  this.s_mat = new THREE.SpriteMaterial( { map:s_map, color:0xffffff })
+  // NOTE: Sprites do not show through other meshes, even transparent ones
+  // this.s_mat = new THREE.SpriteMaterial( { map:s_map, color:0xffffff, transparent:true })
+  this.s_mat = new THREE.MeshBasicMaterial( { map:s_map, color:0xffffff, transparent:true })
 
+  this.s_geo = new THREE.CircleBufferGeometry( 0.2, 3 )
 
 
 
@@ -45,18 +48,22 @@ THREE.VolumetricSnow = function ( options ) {
 
     const vec3 = this.randomVec3()
 
-    const sprite = new THREE.Sprite( this.s_mat )
+    // NOTE: Sprites do not show through other meshes, even transparent ones
+    // const sprite = new THREE.Sprite( this.s_mat )
+    const sprite = new THREE.Mesh( this.s_geo, this.s_mat )
     sprite.position.set( vec3.x, vec3.y, vec3.z )
 
 
     sprite.userData.acceleration = {
       x:0,
-      y:-0.0001,
+      y:-0.0,
       z:0
     }
+
+    // TODO try to have less calls to the random method. Maybe precalculate them and store
     sprite.userData.velocity = {
       x:this.random(-0.1,0.1),
-      y:this.random(-0.001,-0.1),
+      y:this.random(-0.01,-0.1),
       z:0
     }
     sprite.userData.age = 0
@@ -73,9 +80,10 @@ THREE.VolumetricSnow = function ( options ) {
 
       sprite.userData.velocity = {
         x:sprite.parent.random(-0.1,0.1),
-        y:sprite.parent.random(-0.001,-0.1),
+        y:sprite.parent.random(-0.01,-0.1),
         z:0
       }
+
     }
 
 
@@ -83,8 +91,8 @@ THREE.VolumetricSnow = function ( options ) {
       // console.log('tick', this);
       sprite.userData.age++
 
-      sprite.userData.acceleration.y = sprite.parent.random(-0.001, 0.0001)
-      sprite.userData.acceleration.x = sprite.parent.random(-0.01, 0.01)
+      sprite.userData.acceleration.y = sprite.parent.random(-0.001, 0.001)
+      sprite.userData.acceleration.x = sprite.parent.random(-0.001, 0.001)
 
 
       sprite.userData.velocity.y = sprite.userData.velocity.y + sprite.userData.acceleration.y
@@ -149,6 +157,7 @@ THREE.VolumetricSnow = function ( options ) {
 
 
     this.volume = newVolume
+
   }
 
 
