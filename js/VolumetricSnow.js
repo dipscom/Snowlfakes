@@ -134,7 +134,7 @@ THREE.VolumetricSnow = function ( options ) {
   this.update = function () {
 
     // TODO: Enable emitter rate per frame
-    if(this.totalParticles <= this.maxParticles) {
+    if(this.totalParticles < this.maxParticles) {
       // console.log('[VolumetricSnow] update', this.totalParticles, this.maxParticles);
       this.newParticle()
       this.totalParticles++;
