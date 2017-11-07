@@ -41,16 +41,18 @@
 
   var volumetricSnow = new THREE.VolumetricSnow({
     volume:{
-      w:50,
-      h:1,
+      w:25,
+      h:10,
       d:25
-    }
+    },
+    maxParticles:1,
+    maxAge: 100
   })
 
-  volumetricSnow.position.y = 30
-  
+  volumetricSnow.position.y = 10
+
   // Helper to visualise where the snowflakes are being created
-  // volumetricSnow.addHelper()
+  volumetricSnow.addHelper(0x00FF00) // the color argument is optional. Only takes hexadecimal numbers
 
   scene.add( volumetricSnow )
 

@@ -8,16 +8,19 @@ THREE.VolumetricSnow = function ( options ) {
 
 
 
-
-  // options.rate = options.rate || 100
+  // TODO: Add an emitter rate
+  // options.rate = options.rate || 100 // NOTE no influence at the moment
   this.totalParticles = 0
   this.maxParticles = options.maxParticles || 600
+  // TODO: Change age to be in seconds but still only count down in frames
+  this.maxAge = options.maxAge || 600 // in ticks / frames
   this.volume = options.volume || { w:15, h:15, d:15 }
   this.sprite = options.sprite || './textures/particle2.png'
 
 
 
   const s_map = new THREE.TextureLoader().load( this.sprite )
+  // TODO: Add a toggle to use either a sprite or mesh
   // NOTE: Sprites do not show through other meshes, even transparent ones
   // this.s_mat = new THREE.SpriteMaterial( { map:s_map, color:0xffffff, transparent:true })
   this.s_mat = new THREE.MeshBasicMaterial( { map:s_map, color:0xffffff, transparent:true })
@@ -29,12 +32,11 @@ THREE.VolumetricSnow = function ( options ) {
   this.random = function (min, max) {
     // return a number between two boundaries
     return Math.random() * ( max - min ) + min;
-    // return Math.random() * ( max - min + 1 ) + min;
   }
 
 
 
-
+  // TODO: Rename this to refer to the volume of the emitter
   this.randomVec3 = function (min, max) {
     // TODO: return a Vector3 out from the precalculated list
     // console.log('>>>', this.volume);
@@ -43,11 +45,13 @@ THREE.VolumetricSnow = function ( options ) {
 
 
 
-
+  // TODO: Separate newParticle contents from the emitter
   this.newParticle = function () {
 
+    // TODO: Rename this to relate to the volume of the emitter
     const vec3 = this.randomVec3()
 
+    // TODO: Add a toggle to use either a sprite or mesh
     // NOTE: Sprites do not show through other meshes, even transparent ones
     // const sprite = new THREE.Sprite( this.s_mat )
     const sprite = new THREE.Mesh( this.s_geo, this.s_mat )
@@ -56,7 +60,7 @@ THREE.VolumetricSnow = function ( options ) {
 
     sprite.userData.acceleration = {
       x:0,
-      y:-0.0,
+      y:0,
       z:0
     }
 
@@ -68,11 +72,13 @@ THREE.VolumetricSnow = function ( options ) {
     }
     sprite.userData.age = 0
     // we're counting age on frame ticks
-    sprite.userData.maxAge = 600 // If maxAge is greater than maxParticles, we get a gap
+    sprite.userData.maxAge = this.maxAge // If maxAge is greater than maxParticles, we get a gap
 
 
 
     sprite.userData.reset = function () {
+
+      // TODO: Rename this to relate to the volume of the emitter
       const _v3 = sprite.parent.randomVec3()
       // console.log('reset', sprite.userData);
       sprite.position.set( _v3.x, _v3.y, _v3.z )
@@ -91,17 +97,20 @@ THREE.VolumetricSnow = function ( options ) {
       // console.log('tick', this);
       sprite.userData.age++
 
+
       sprite.userData.acceleration.y = sprite.parent.random(-0.001, 0.001)
-      sprite.userData.acceleration.x = sprite.parent.random(-0.001, 0.001)
+      // TODO: Change x movement to use sin/cos
+      sprite.userData.acceleration.x = sprite.parent.random(-0.01, 0.01)
 
 
       sprite.userData.velocity.y = sprite.userData.velocity.y + sprite.userData.acceleration.y
 
       sprite.userData.velocity.x = sprite.userData.velocity.x + sprite.userData.acceleration.x
 
-      // We want a steady flow downwards to begin with
+
       sprite.position.y = sprite.position.y + sprite.userData.velocity.y
       sprite.position.x = sprite.position.x + sprite.userData.velocity.x
+
 
       if(sprite.userData.age >= sprite.userData.maxAge) {
         // console.log('Die!', sprite.parent);
@@ -113,6 +122,7 @@ THREE.VolumetricSnow = function ( options ) {
 
     // console.log(sprite);
 
+    // TODO: Toggle to lock/unlock the particles relative to the emitter
     this.add( sprite )
 
   }
@@ -121,12 +131,9 @@ THREE.VolumetricSnow = function ( options ) {
 
 
 
-
-
-
-
   this.update = function () {
 
+    // TODO: Enable emitter rate per frame
     if(this.totalParticles <= this.maxParticles) {
       // console.log('[VolumetricSnow] update', this.totalParticles, this.maxParticles);
       this.newParticle()
@@ -136,7 +143,6 @@ THREE.VolumetricSnow = function ( options ) {
 
     this.children.forEach(function (child) {
       if(child.userData.tick) {
-        child.userData.age
         child.userData.tick()
       }
     })
@@ -148,7 +154,7 @@ THREE.VolumetricSnow = function ( options ) {
 
 
   this.resize = function (newVolume) {
-    // NOTE: Need to find a bette way to calculate this
+    // NOTE: si there a better way to calculate this
     if(this.visualVolume) {
       this.visualVolume.scale.x = newVolume.w / this.volume.w
       this.visualVolume.scale.y = newVolume.h / this.volume.h
@@ -164,18 +170,19 @@ THREE.VolumetricSnow = function ( options ) {
 
 
   // Create a visual helper
-  this.addHelper = function () {
+  this.addHelper = function (color) {
+
+    const _color = color || 0xFF00FF
+
     const v_geo = new THREE.BoxBufferGeometry( this.volume.w, this.volume.h, this.volume.d )
-    const v_mat = new THREE.MeshBasicMaterial( {color:0xFF00FF, wireframe:true} )
+    const v_mat = new THREE.MeshBasicMaterial( {color:_color, wireframe:true} )
+
+
     this.visualVolume = new THREE.Mesh( v_geo, v_mat )
 
     this.add( this.visualVolume )
 
   }
-
-
-
-
 
 }
 
