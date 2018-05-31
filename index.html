@@ -1,29 +1,59 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0">
-    <title>THREEJS Snowflakes</title>
-    <style media="screen">
-      html, body {
-        margin: 0;
-        width: 100%;
-        height: 100%;
-      }
 
-      canvas {
-        width: 100%;
-        height: 100%;
-      }
-    </style>
-  </head>
-  <body>
-    <canvas id="canvas"></canvas>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0">
+  <title>THREEJS Snowflakes</title>
+  <style media="screen">
+    html,
+    body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .controls {
+      background: hsl(360, 0%, 90%);
+      bottom: 5vh;
+      box-sizing: border-box;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      left: 5%;
+      padding: 16px;
+      position: fixed;
+      width: 90%;
+    }
+
+    .controls>span {
+      margin: 8px;
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id="canvas"></canvas>
+
+  <div class="controls">
+    <span>Width:<input type="number" name="width" value=""></span>
+    <span>Height:<input type="number" name="height" value=""></span>
+    <span>Depth:<input type="number" name="depth" value=""></span>
+  </div>
 
 
-    <script src='./cdn/three.min.js'></script>
-    <!-- <script src='https://cdnjs.cloudflare.com/ajax/libs/three.js/88/three.min.js'></script> -->
-    <script src="./js/VolumetricSnow.js"></script>
-    <script src="snow.js"></script>
-  </body>
+  <script src='./cdn/three.min.js'></script>
+  <!-- <script src='https://cdnjs.cloudflare.com/ajax/libs/three.js/88/three.min.js'></script> -->
+  <script src="./js/OrbitControls.js"></script>
+  <script src="./js/VolumetricSnow.js"></script>
+  <script src="snow.js"></script>
+</body>
+
 </html>
