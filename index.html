@@ -20,17 +20,24 @@
     }
 
     .controls {
-      background: hsl(360, 0%, 90%);
+      align-items: center;
+      background-color: hsl(360, 0%, 90%);
       bottom: 5vh;
       box-sizing: border-box;
       display: flex;
       flex-wrap: wrap;
+      font-family: Arial, sans-serif;
       justify-content: center;
-      align-items: center;
-      left: 5%;
-      padding: 16px;
+      left: 50%;
+      max-width: 800px;
+      transform: translate(-50%,0);
+      padding: 8px;
       position: fixed;
-      width: 90%;
+      width: 70%;
+    }
+
+    .controls input {
+      max-width: 60px;
     }
 
     .controls>span {
@@ -43,9 +50,9 @@
   <canvas id="canvas"></canvas>
 
   <div class="controls">
-    <span>Width:<input type="number" name="width" value=""></span>
-    <span>Height:<input type="number" name="height" value=""></span>
-    <span>Depth:<input type="number" name="depth" value=""></span>
+    <span>Width:<input type="number" name="width" placeholder="16"></span>
+    <span>Height:<input type="number" name="height" placeholder="3"></span>
+    <span>Depth:<input type="number" name="depth" placeholder="16"></span>
   </div>
 
 

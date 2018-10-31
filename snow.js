@@ -111,6 +111,10 @@ function render() {
 
 function onInputChange(e) {
 
+  console.log(e)
+
+  if( e.type === 'keydown' && e.keyCode !== 13) return;
+
   // Only run if we have a valid updated value
   if (!this.value) return;
 
@@ -152,6 +156,7 @@ var inputs = document.querySelectorAll('input');
 
 inputs.forEach(function(input) {
   input.addEventListener('blur', onInputChange);
+  input.addEventListener('keydown', onInputChange);
 });
 
 
